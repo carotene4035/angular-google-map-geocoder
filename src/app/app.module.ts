@@ -4,6 +4,7 @@ import {
   AgmCoreModule,
   GoogleMapsAPIWrapper
 } from '@agm/core';
+import { GeocoderService } from './geocoder.service';
 
 import { AppComponent } from './app.component';
 
@@ -17,7 +18,9 @@ import { AppComponent } from './app.component';
       apiKey: 'AIzaSyDfnrYNQtMC-PqTWvH9F36TehlAN6Zw3MM'
     }),
   ],
-  providers: [],
+  providers: [
+    GeocoderService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
