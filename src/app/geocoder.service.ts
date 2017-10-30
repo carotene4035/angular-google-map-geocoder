@@ -62,7 +62,54 @@ export class GeocoderService extends GoogleMapsAPIWrapper {
         /** ここが非同期なんだ。。 */
         if (status == 'OK') {
           console.log(results);
-          return results;
+          /** 結果を成形 */
+
+          /*
+           * 返ってきた逆geocode結果から、
+           * もっとも情報量の多いものを選ぶ
+           *   具体的には、address_componentsの要素数が一番多いものを選ぶ
+           */
+          let address;
+          let max_length = 0;
+
+          results.forEach(function(result, index, results) {
+            if (index == 0) {
+              address    = result;
+              max_length = result.address_components.length;
+            } else {
+              let length  = result.address_components.length;
+              if (max_length < length) {
+                address    = result;
+                max_length = length;
+              }
+            }
+          });
+          console.log(address);
+
+          let components = address.address_components.reverse();
+          let addressStr = '';
+          components.forEach(function(component, index, components) {
+            if(
+              component.types.indexOf('political') >= 0
+            && component.types.indexOf('country') == -1
+            && component.types.indexOf('administrative_area_level_1') == -1
+            ) {
+              let long_name = component.long_name;
+              if(
+                component.types.indexOf('sublocality_level_3') >= 0
+              || component.types.indexOf('sublocality_level_4') >= 0
+              ) {
+                long_name = long_name + '-';
+              }
+              addressStr = addressStr  + long_name;
+            }
+          });
+          let endStr = addressStr.slice(-1);
+          if (endStr == '-') {
+            addressStr = addressStr.slice(0, -1);
+          }
+          console.log(addressStr);
+
         } else {
           alert('Geocode was not successful for the following reason: ' + status);
           return false;
