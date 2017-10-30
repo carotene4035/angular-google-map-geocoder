@@ -1,7 +1,9 @@
-<button (click)="onClick()"></button>
+<button (click)="onClick()">緯度経度を取得するよ</button>
+<button (click)="onClick()">住所を取得するよ</button>
 <agm-map
   [latitude]="lat"
   [longitude]="lng"
   [zoom]="zoom"
+  (mapClick)="mapClicked($event)"
   >
 </agm-map>

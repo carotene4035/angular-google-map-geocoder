@@ -34,30 +34,41 @@ export class GeocoderService extends GoogleMapsAPIWrapper {
         /** ここが非同期なんだ。。 */
         if (status == 'OK') {
           console.log(results);
+          console.log(results[0]);
+          console.log(results[0].geometry);
+          console.log(results[0].geometry.location.lat());
+          console.log(results[0].geometry.location.lng());
           return results;
         } else {
           alert('Geocode was not successful for the following reason: ' + status);
           return false;
         }
       });
-
-//      /** Observable.createでstreamが作成できる */
-//      return Observable.create(observer => {
-//        console.log('111111');
-//        geocoder.geocode( {'address': address }, function(results, status) {
-//          if (status == google.maps.GeocoderStatus.OK) {
-//            console.log('aa');
-//            observer.next(results[0].geometry.location);
-//            observer.complete();
-//          } else {
-//            console.log('bb');
-//            console.log('error - ', results, ' & Status - ', status);
-//            observer.next({});
-//            observer.complete();
-//          }
-//        });
-//      });
-
     });
   }
+
+
+  getAddress(lat, lng)
+  {
+    // google maps scriptsがloadしおわる
+    this.__loader.load().then(() => {
+
+      let latlng = new google.maps.LatLng(lat, lng);
+
+      // geocoderオブジェクトを取得する
+      let geocoder = new google.maps.Geocoder();
+
+      geocoder.geocode( { 'latLng': latlng }, function(results, status) {
+        /** ここが非同期なんだ。。 */
+        if (status == 'OK') {
+          console.log(results);
+          return results;
+        } else {
+          alert('Geocode was not successful for the following reason: ' + status);
+          return false;
+        }
+      });
+    });
+  }
+
 }

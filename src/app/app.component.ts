@@ -22,9 +22,15 @@ export class AppComponent {
   {
     let address = '東京';
     let ret = this.geocoderService.getLatLan(address);
-    console.log(ret);
-
 //    this.subscription = this.geocoderService.getLatLan(address).subscribe(
 //    );
   }
+
+  mapClicked($event)
+  {
+    let lat = $event.coords.lat;
+    let lng = $event.coords.lng;
+    this.geocoderService.getAddress(lat, lng);
+  }
+
 }
