@@ -30,6 +30,8 @@ export class AppComponent {
   {
     let lat = $event.coords.lat;
     let lng = $event.coords.lng;
+    console.log('緯度: ' + lat);
+    console.log('経度: ' + lng);
     this.geocoderService.getAddress(lat, lng);
   }
 

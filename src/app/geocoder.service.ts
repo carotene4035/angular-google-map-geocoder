@@ -89,6 +89,14 @@ export class GeocoderService extends GoogleMapsAPIWrapper {
           let components = address.address_components.reverse();
           let addressStr = '';
           components.forEach(function(component, index, components) {
+            /** 行政区を抽出 */
+            if(
+              JSON.stringify(component.types)
+           == JSON.stringify(["locality", "political"])
+            ) {
+              console.log(component.long_name);
+            }
+
             if(
               component.types.indexOf('political') >= 0
             && component.types.indexOf('country') == -1
@@ -97,7 +105,7 @@ export class GeocoderService extends GoogleMapsAPIWrapper {
               let long_name = component.long_name;
               if(
                 component.types.indexOf('sublocality_level_3') >= 0
-              || component.types.indexOf('sublocality_level_4') >= 0
+                  || component.types.indexOf('sublocality_level_4') >= 0
               ) {
                 long_name = long_name + '-';
               }
